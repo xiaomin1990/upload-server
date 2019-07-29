@@ -1,0 +1,119 @@
+
+<style lang="less">
+.header {
+  width: 30px;
+  height: 30px;
+  border-radius: 80%;
+}
+.head_title {
+  font-size: 18px;
+  font-weight: bolder;
+  text-align: center;
+}
+.video {
+  margin-left: 10%;
+}
+</style>
+
+<template>
+ <view>
+        <view class="container">
+          <video src="{{src}}" ></video>
+          <button bindtap="bindButtonTap">获取视频</button>
+        </view>
+      </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class add extends wepy.page {
+  config = {
+    navigationBarTitleText: '视频播放'
+  };
+  components = {};
+  data = {
+    src: '',
+    uploadObj:{
+      url:'https://wx.info-bright.com/fileupload/files/12345.mp4',
+      size:0,
+      offset:0
+    }
+  
+  };
+  methods = {
+    bindButtonTap:()=> {
+      var that = this;
+      wx.chooseVideo({
+        sourceType: ['album', 'camera'],
+        maxDuration: 60,
+        camera: ['front', 'back'],
+        success:(res)=> {
+          console.log('tempFilePath:',res.tempFilePath)
+          that.setData({
+            //src: res.tempFilePath
+          });
+          that.upload(res.tempFilePath)
+        }
+      });
+    },
+  }
+  events = {};
+  onLoad() {
+    this.videoContext = wx.createVideoContext('myVideo');
+  }
+  upload(filePath){
+    let that=this
+   let fs=wx.getFileSystemManager()
+    fs.readFile({
+       filePath:filePath,
+       success:(res) =>{
+          //console.log('getFileSystemManager res:',res.data.byteLength,res.data)
+           this.postHandler(res.data,({location})=>{
+              this.patchHandler(location,res.data,(url)=>{
+                  console.log('url:',url)
+                   that.setData({
+                      src: url
+                 });
+              })
+           })
+       },
+
+     })
+  }
+
+  postHandler(data,callback){
+        wx.request({
+          url:this.uploadObj.url,
+          method:"POST",
+          header:{
+            'Upload-Length':data.byteLength,
+          },
+          success:(res)=>{
+              if(res.statusCode == "201"){
+                callback({location:res.header.Location})
+              }
+          }
+       })
+    }
+
+    patchHandler(location,data,callback){
+         wx.request({
+          url:location,
+          method:"POST",
+          header:{
+            'Upload-Length':data.byteLength,
+            'X-HTTP-Method-Override':'PATCH',
+            'Upload-Offset':this.uploadObj.offset,
+            'Content-Type':'application/offset+octet-stream'
+          },
+          data:data,
+          success:(res)=>{
+              console.log("patchHandler:",res)
+              if(res.statusCode == "204"){
+                callback(res && res.header && res.header.url)
+              }
+          }
+       })
+    }
+}
+</script>

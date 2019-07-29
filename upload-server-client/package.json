@@ -1,0 +1,23 @@
+{
+  "name": "upload-server-client",
+  "description": "video or picture upload ",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "xiaomin <xiao_min1990@hotmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "extend": "^3.0.2",
+    "request": "^2.88.0"
+  }
+}

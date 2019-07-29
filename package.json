@@ -1,0 +1,40 @@
+{
+  "name": "upload-server",
+  "description": "video or picture upload ",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "xiaomin <xiao_min1990@hotmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "devDependencies": {
+    "@vimeo/eslint-config-player": "^5.0.1",
+    "babel-eslint": "^10.0.1",
+    "coveralls": "^3.0.3",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.15.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^6.0.2",
+    "node-mocks-http": "^1.7.3",
+    "nyc": "^13.3.0",
+    "rimraf": "^2.6.3",
+    "should": "^13.2.3",
+    "supertest": "^4.0.0"
+  },
+  "dependencies": {
+    "configstore": "^4.0.0",
+    "cos-nodejs-sdk-v5": "^2.5.9",
+    "debug": "^4.1.1",
+    "file-match": "^1.0.2",
+    "utils-extend": "^1.0.8"
+  }
+}
